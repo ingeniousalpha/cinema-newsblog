@@ -11,7 +11,7 @@
                     <p class="article_text">{{ t }}</p>
                 {% endfor %}
             {% else %}
-                <form action="{% url 'article_edit' 'create' %}" method="POST">
+                <form action="{% url 'article_edit' 'create' %}" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <input required class="create_el new_article_title" name="new_article_title" type="text" placeholder="Заголовок">
                     <input required class="create_el new_article_image" name="new_article_image" type="file">

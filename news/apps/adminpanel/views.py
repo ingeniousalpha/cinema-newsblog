@@ -6,6 +6,7 @@ from django.utils import timezone
 from .models import Admin
 from django.apps import apps
 Article = apps.get_model('articles', 'Article')
+import os
 
 def index(request):
     return render(request, 'adminpanel/index.html')
@@ -32,11 +33,22 @@ def article_edit_page(request, art_id):
     elif request.method == "POST":
         title = request.POST["new_article_title"]
         date = timezone.now()
-        image = request.POST["new_article_image"]
+        image = request.FILES['new_article_image']
         text = request.POST["new_article_text"]
-        print(title, image, date, text)
+
+        print(title, image.name, date, text)
         a = Article(title=title, date=date, text=text)
+        a.save()
+        image_name = "article" + str(a.id) + os.path.splitext(image.name)[-1]
         print(a)
+
+        # uploading file
+        with open("news/apps/articles/static/images/"+image_name, 'wb+') as destination:
+            for chunk in image.chunks():
+                destination.write(chunk)
+
+        a.image_path = 'images/' + image_name
+        a.save()
         return HttpResponseRedirect( reverse("index") )
 
 
