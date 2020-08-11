@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+        <div class="content">
+            {% if article %}
+                <input class="create_el new_article_title" name="new_article_title" type="text" placeholder="Заголовок" value="{{ article.title }}">
+                <div class="article_date">{{ article.date }}</div>
+                <img class="article_image" src="{% static 'images/1.jpg' %}" alt="Article Image">
+                {% for t in article.text %}
+                    <p class="article_text">{{ t }}</p>
+                {% endfor %}
+            {% else %}
+                <form action="{% url 'article_edit' 'create' %}" method="POST">
+                    {% csrf_token %}
+                    <input required class="create_el new_article_title" name="new_article_title" type="text" placeholder="Заголовок">
+                    <input required class="create_el new_article_image" name="new_article_image" type="file">
+                    <textarea required class="create_el new_article_text" name="new_article_text" placeholder="Текст"></textarea>
+                    <div class="buttons">
+                        <button class="btn btn-primary publish_btn" type="Submit">Опубликовать</button>
+                        <a href="{% url 'index' %}" class="btn btn-dark">Отмена</a>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+{% endblock %}

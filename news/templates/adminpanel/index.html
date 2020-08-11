@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>Привет, username</h1>
+    <div>
+        <a href="{% url 'article_edit' 'create' %}" class="btn btn-primary">Добавить Стастью</a>
+        <div class="articles_amount">Количество статей: {{amount}}</div>
+    </div>
+{% endblock %}
