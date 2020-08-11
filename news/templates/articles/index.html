@@ -12,6 +12,25 @@
             </div>
         </div>
     {% endif %}
+
+    <div class="content">
+        <div class="row">
+            {% for a in articles %}
+                <div class="col-6">
+                    <div class="article_block">
+                        <a href="{% url 'articles:article_page' a.id %}" class="article_block_link">
+                            <img class="article_block_image" src="{% static a.image_path %}" alt="Article Image">
+                            <div class="article_block_title">{{ a.title }}</div>
+                            <div class="article_block_date">{{ a.date }}</div>
+                        </a>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:2 %}
+                    <div class="w-100"></div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
 
 {% block adjustWidth %}

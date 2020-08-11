@@ -1,15 +1,17 @@
+import os
 from django.contrib import auth
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
-from .models import Admin
 from django.apps import apps
 Article = apps.get_model('articles', 'Article')
-import os
+
 
 def index(request):
-    return render(request, 'adminpanel/index.html')
+    articles = Article.objects.all().order_by('-date')
+    amount = len(articles)
+    return render(request, 'adminpanel/index.html', {"articles": articles, "amount": amount})
 
 
 def article_edit_page(request, art_id):

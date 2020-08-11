@@ -2,9 +2,34 @@
 {% load static %}
 
 {% block content %}
-    <h1>Привет, username</h1>
-    <div>
-        <a href="{% url 'article_edit' 'create' %}" class="btn btn-primary">Добавить Стастью</a>
-        <div class="articles_amount">Количество статей: {{amount}}</div>
+    <div class="content">
+        <h1>Привет, username</h1>
+        <div class="just_block">
+            <a href="{% url 'article_edit' 'create' %}" class="btn btn-primary add_btn">Добавить Стастью</a>
+            <div class="articles_amount">Количество статей: {{amount}}</div>
+        </div>
+        <div class="row">
+            {% for a in articles %}
+                <div class="col-5">
+                    <div class="article_block">
+                        <a href="{% url 'articles:article_page' a.id %}" class="article_block_link"></a>
+                        <img class="article_block_image" src="{% static a.image_path %}" alt="Article Image">
+                        <div class="article_block_title">{{ a.title }}</div>
+                        <div class="article_block_date">{{ a.date }}</div>
+                    </div>
+                </div>
+                <div class="col-1">
+                    <a href="{% url 'article_edit' a.id %}" class="btn btn-dark edit_btn">
+                        <img src="{% static 'images/edit.png' %}" alt="">
+                    </a>
+                    <button class="btn btn-danger delete_btn">
+                        <img src="{% static 'images/delete.png' %}" alt="">
+                    </button>
+                </div>
+                {% if forloop.counter|divisibleby:2 %}
+                    <div class="w-100"></div>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

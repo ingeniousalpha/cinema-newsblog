@@ -5,7 +5,8 @@ from .models import Article
 
 def index(request):
     latest = Article.objects.order_by('-date')[0]
-    return render(request, 'articles/index.html', {"latest_article": latest})
+    articles = Article.objects.all().order_by('-date')[1:]
+    return render(request, 'articles/index.html', {"latest_article": latest, "articles": articles})
 
 
 def article_page(request, art_id):
