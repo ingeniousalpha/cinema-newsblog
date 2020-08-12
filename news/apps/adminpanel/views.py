@@ -9,6 +9,10 @@ Article = apps.get_model('articles', 'Article')
 
 
 def index(request):
+    if request.method == "POST":
+        id = request.POST['modal_value']
+        a = Article.objects.get(id=id)
+        a.delete()
     articles = Article.objects.all().order_by('-date')
     amount = len(articles)
     return render(request, 'adminpanel/index.html', {"articles": articles, "amount": amount})
