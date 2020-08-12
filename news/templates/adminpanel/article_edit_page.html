@@ -44,6 +44,7 @@
                 //document.getElementByClassName("article_image")[0].src = "";
             }
         }
+        {% if article %}
         function date_update(){
             $.ajax({
                 type: "GET",
@@ -52,5 +53,6 @@
                 document.getElementsByClassName("article_date")[0].innerText = result["date"];
             });
         }
+        {% endif %}
     </script>
 {% endblock %}

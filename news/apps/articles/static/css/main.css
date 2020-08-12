@@ -211,3 +211,25 @@ body {
     height: 20px;
     width: 20px;
 }
+.login_form{
+    text-align: center;
+}
+.login_form h2 {
+    margin-bottom: 20px;
+}
+.login_form_input{
+    display: block;
+    margin: 10px auto;
+    padding: 5px 10px;
+}
+.admin_login_btn{
+    width: 200px
+}
+.user_info{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.logout_btn{
+    margin-left: 10px;
+}

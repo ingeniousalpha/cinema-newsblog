@@ -9,15 +9,20 @@ Article = apps.get_model('articles', 'Article')
 
 
 def index(request):
-    if request.method == "POST":
-        id = request.POST['modal_value']
-        a = Article.objects.get(id=id)
-        a.delete()
-    articles = Article.objects.all().order_by('-date')
-    for a in articles:
-        a.date = a.date_str()
-    amount = len(articles)
-    return render(request, 'adminpanel/index.html', {"articles": articles, "amount": amount})
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            id = request.POST['modal_value']
+            a = Article.objects.get(id=id)
+            a.delete()
+        articles = Article.objects.all().order_by('-date')
+        for a in articles:
+            a.date = a.date_str()
+        amount = len(articles)
+        username = request.user
+        return render(request, 'adminpanel/index.html', {"articles": articles, "amount": amount, "username": username})
+    else:
+        return HttpResponseRedirect(reverse("loginadmin"))
+
 
 
 def article_edit_page(request, art_id):
@@ -73,17 +78,24 @@ def article_date_update(request, art_id):
     return JsonResponse({"date": mydate})
 
 
-def login_page(request, message=None):
+def login_page(request):
     if request.method == "POST":
         username = request.POST['nickname']
         password = request.POST['password']
 
         user = auth.authenticate(username=username, password=password)
-
+        print(user)
         if user is not None:
             auth.login(request, user)
             return HttpResponseRedirect(reverse("index"))
         else:
-            HttpResponseRedirect(reverse("loginadmin", args=("there is no such user")))
-    else:
+            return HttpResponseRedirect(reverse("loginadmin"))
+    elif request.method == "GET":
+        print(auth.user_logged_in)
+        message = ""
         return render(request, 'adminpanel/login.html', {"message": message})
+
+
+def logout_page(request):
+    auth.logout(request)
+    return HttpResponseRedirect(reverse("articles:index"))

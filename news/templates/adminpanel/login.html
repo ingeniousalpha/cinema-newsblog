@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+        <div class="content" style="height: 70vh;">
+            <form class="login_form" action="{% url 'loginadmin' %}" method="POST">
+                {% csrf_token %}
+                <h2>Админ панель</h2>
+                <input required class="login_form_input" name="nickname" type="text" placeholder="Nickname">
+                <input required class="login_form_input" name="password" type="password" placeholder="Password">
+                <button class="btn btn-primary admin_login_btn" type="Submit">Войти</button>
+            </form>
+        </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+    </script>
+{% endblock %}
