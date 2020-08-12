@@ -200,3 +200,14 @@ body {
 #modal_value{
     display: none;
 }
+.article_date_block{
+    display: flex;
+    align-items: center;
+}
+.reset_btn{
+    padding: 5px 10px;
+}
+.reset_btn img{
+    height: 20px;
+    width: 20px;
+}

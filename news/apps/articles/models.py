@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import dateformat
 
 
 class Article(models.Model):
@@ -10,3 +11,5 @@ class Article(models.Model):
     def __str__(self):
         return self.title
 
+    def date_str(self):
+        return dateformat.format(self.date, 'M d, Y • H:i')

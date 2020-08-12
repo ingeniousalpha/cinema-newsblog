@@ -4,17 +4,28 @@
 {% block content %}
         <div class="content">
             {% if article %}
-                <input class="create_el new_article_title" name="new_article_title" type="text" placeholder="Заголовок" value="{{ article.title }}">
-                <div class="article_date">{{ article.date }}</div>
-                <img class="article_image" src="{% static 'images/1.jpg' %}" alt="Article Image">
-                {% for t in article.text %}
-                    <p class="article_text">{{ t }}</p>
-                {% endfor %}
+                <form action="{% url 'article_edit' article.id %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input required class="create_el new_article_title" name="new_article_title" type="text" placeholder="Заголовок" value="{{ article.title }}">
+                    <div class="article_date_block">
+                        <div class="article_date" name="new_article_date" style="margin-top: 0; margin-right: 10px;">{{ article.date }}</div>
+                        <button type="button" class="btn btn-light reset_btn" onclick="date_update()">
+                            <img src="{% static 'images/reset.png' %}" alt="reset image">
+                        </button>
+                    </div>
+                    <input onchange="image_show(false)" class="create_el new_article_image" style="margin: 0;margin-top: 20px;" name="new_article_image" type="file">
+                    <img class="article_image" src="{% static article.image_path %}" alt="Article Image">
+                    <textarea required style="height: 400px;" class="create_el new_article_text" name="new_article_text" placeholder="Текст">{{ article.text }}</textarea>
+                    <div class="buttons">
+                        <button class="btn btn-primary publish_btn" type="Submit">Сохранить</button>
+                        <a href="{% url 'index' %}" class="btn btn-dark">Отмена</a>
+                    </div>
+                </form>
             {% else %}
                 <form action="{% url 'article_edit' 'create' %}" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <input required class="create_el new_article_title" name="new_article_title" type="text" placeholder="Заголовок">
-                    <input required class="create_el new_article_image" name="new_article_image" type="file">
+                    <input required onchange="image_show(true)" class="create_el new_article_image" name="new_article_image" type="file">
                     <textarea required class="create_el new_article_text" name="new_article_text" placeholder="Текст"></textarea>
                     <div class="buttons">
                         <button class="btn btn-primary publish_btn" type="Submit">Опубликовать</button>
@@ -23,4 +34,23 @@
                 </form>
             {% endif %}
         </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        function image_show(is_new){
+            console.log(is_new);
+            if (is_new == false){
+                //document.getElementByClassName("article_image")[0].src = "";
+            }
+        }
+        function date_update(){
+            $.ajax({
+                type: "GET",
+                url: "{% url 'date_update' article.id %}"
+            }).done( function(result){
+                document.getElementsByClassName("article_date")[0].innerText = result["date"];
+            });
+        }
+    </script>
 {% endblock %}
